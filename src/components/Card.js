@@ -1,28 +1,55 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import { toggleFavorites } from '../store/actions/newsActions';
 
 const Card = (props) => {
+
+  const dispatch = useDispatch()
+
+  const isFavorite = useSelector(
+    state => state.news.favorites.some(article => article.url === props.url)
+  )
+
   return ( 
-    <TouchableOpacity onPress={() => props.navigation.navigate("NewsDetailsScreen")}>
+    <TouchableOpacity onPress={() => {
+        props.navigation.navigate("NewsDetailsScreen", {
+          articleUrl: props.url
+            // title: props.title,
+            // description: props.description
+        }) 
+    }}>
       <View style={styles.card}>
         <View style={styles.imageWrapper}>
           <Image 
-            source={require("../../assets/news.jpeg")} 
+            // source={require("../../assets/news.jpeg")} 
+            source={{uri: props.image ?? require("../../assets/news.jpeg")}}
             style={styles.image}
           />
         </View>
         <View style={styles.titleWrapper}>
-          <Text style={styles.title}>Lorem ipsum dolor sit amet.</Text>
+          <Text style={styles.title}>
+            {props.title && props.title.length <= 30 
+              ? props.title 
+              : props.title.slice(0, 30) + '...'
+            }
+          </Text>
           <MaterialIcons 
-            name="favorite-border" 
+            name={isFavorite ? 'favorite' : 'favorite-border'}
             color="#72bcd4" 
             size={24}
+            onPress={() => {
+              dispatch(toggleFavorites(props.url))
+            }}
           />
         </View>
         <View style={styles.descWrapper}>
           <Text style={styles.description}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat consequuntur repudiandae...
+            {props.description && props.description.length <= 85 
+              ? props.description 
+              : props.description.slice(0, 85) + '...'
+            }
           </Text>
         </View>
       </View>

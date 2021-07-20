@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { Provider } from 'react-redux';
+import store from './src/store/index';
 import AppLoading from 'expo-app-loading';
 import { useFonts, Montserrat_700Bold, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 import AppNavigator from './src/navigation/AppNavigator';
@@ -13,7 +15,11 @@ export default function App() {
     return <AppLoading />;
   } 
   
- return <AppNavigator />;  
+  return (
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
+ );  
 }
 
 const styles = StyleSheet.create({

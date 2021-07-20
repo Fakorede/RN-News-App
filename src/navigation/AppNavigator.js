@@ -29,14 +29,11 @@ function HomeNavigator() {
   return (
     <Stack.Navigator 
       initialRouteName="NewsScreen"
-      screenOptions={{
-        headerLeft: () => <Hamburger />
-      }}  
     >
       <Stack.Screen 
         name="NewsScreen" 
         component={NewsScreen} 
-        options={{title: 'All News'}}
+        options={{title: 'All News', headerLeft: () => <Hamburger />}}
       />
       <Stack.Screen 
         name="NewsDetailsScreen" 
